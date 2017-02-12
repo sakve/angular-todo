@@ -10,21 +10,19 @@
    <script>
       var app = angular.module("first",[]);
       app.controller("firstCtrl", function($scope){
-      $scope.msg="Angular js is working ";
+      $scope.msg="Angular - Todo App ";
       $scope.notesData=[{"note":"John"},{"note":"Doe"}];
-      
+
       $scope.popNote = function (indexValue){
-      alert(indexValue);
-      
       $scope.notesData.splice(indexValue,1);
       };
-      
+
       $scope.pushNote = function(noteValue){
-      
+
       if(noteValue==''||noteValue==undefined){
       alert('Please enter note to add ');
       } else {
-      
+
       if($scope.notesData.some(function(o) {return o["note"]===noteValue;})==true){
       alert('Note already exists');
       } else {
@@ -33,20 +31,20 @@
       $scope.notesData.push(note);
       $scope.addNote='';
       }
-      
+
       }
-      
+
       };
-      
+
       $scope.checkDuplicate = function(vale){
       //alert($scope.notesData.indexOf(vale));
       alert($scope.notesData.some(function(o) {return o["note"]===vale;}));
       return;
       }
-      
+
       }
       )
-      
+
    </script>
    <style>
       table,td,tr,th{
@@ -58,7 +56,7 @@
    </style>
    <body ng-app="first">
       <div ng-controller="firstCtrl" align="center">
-         {{msg}}
+      <h1>   {{msg}}</h1>
          <br><br>
          <table ng-hide="!notesData.length">
             <th>S.No</th>
@@ -76,7 +74,7 @@
             </tr>
          </table>
          <div ng-hide="notesData.length">There are no more Notes available, please click on add note for adding a new note<br><textarea ng-model="addNote"></textarea>
-            <input type="button"  value="Add New Note" ng-click="pushNote(addNote)" ng-disabled="!addNote"></input> 
+            <input type="button"  value="Add New Note" ng-click="pushNote(addNote)" ng-disabled="!addNote"></input>
          </div>
          <br/><br/>
       </div>
