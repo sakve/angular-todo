@@ -2,19 +2,62 @@
    <head>
       <title>Hello Git</title>
    </head>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.js"></script>
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
    <script>
-      var app = angular.module("first",[]);
-      app.controller("firstCtrl", function($scope){
+      var app = angular.module("first",['ngMaterial']);
+      app.controller("firstCtrl", function($scope,$mdToast){
+
+        var last = {
+      bottom: false,
+      top: true,
+      left: false,
+      right: true
+    };
+
+  $scope.toastPosition = angular.extend({},last);
+
+  $scope.getToastPosition = function() {
+    sanitizePosition();
+
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
+
+  function sanitizePosition() {
+    var current = $scope.toastPosition;
+
+    if ( current.bottom && last.top ) current.top = false;
+    if ( current.top && last.bottom ) current.bottom = false;
+    if ( current.right && last.left ) current.left = false;
+    if ( current.left && last.right ) current.right = false;
+
+    last = angular.extend({},current);
+  }
+
+  var showSimpleToast = function(message) {
+    var pinTo = $scope.getToastPosition();
+
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent(message)
+        .position(pinTo )
+        .hideDelay(3000)
+    );
+  };
+
+
       $scope.msg="Angular - Todo App ";
       $scope.notesData=[{"note":"John"},{"note":"Doe"}];
 
       $scope.popNote = function (indexValue){
       $scope.notesData.splice(indexValue,1);
+      showSimpleToast('Note Removed Successfully');
       };
 
       $scope.pushNote = function(noteValue){
@@ -29,6 +72,7 @@
       var note={"note":noteValue};
       //$scope.checkDuplicate(noteValue);
       $scope.notesData.push(note);
+      showSimpleToast('Note Added Successfully');
       $scope.addNote='';
       }
 
